@@ -1,15 +1,15 @@
 # ToLearn
-1.) TypeScript crash course
+## 1.) TypeScript crash course
         <Resources>
             </> https://react-typescript-cheatsheet.netlify.app/docs/basic/setup
             </> https://www.youtube.com/watch?v=joTOrCiAPB4
 
-2.) Material UI
+## 2.) Material UI
 
 -----------------------------------------------------------------------------------------------
 
-#Learnings 
-1.) TypeScript:
+# Learnings 
+## 1.) TypeScript:
         <TopicsCovered>
             </> Typing Component Props
                 type AppProps = {
@@ -130,7 +130,7 @@
                 
     Good to go..
 
-2.) Material UI
+## 2.) Material UI
             
 
 -----------------------------------------------------------------------------------------------
