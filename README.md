@@ -1,4 +1,4 @@
-#ToLearn
+# ToLearn
 1.) TypeScript crash course
         <Resources>
             </> https://react-typescript-cheatsheet.netlify.app/docs/basic/setup
