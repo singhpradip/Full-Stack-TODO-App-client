@@ -1,0 +1,37 @@
+#ToLearn
+1.) TypeScript crash course
+        <Resources>
+            </> https://react-typescript-cheatsheet.netlify.app/docs/basic/setup
+            </> https://www.youtube.com/watch?v=joTOrCiAPB4
+2.) MUI
+
+-----------------------------------------------------------------------------------------------
+
+#Learnings 
+1.) TypeScript:
+        <TopicsCovered>
+            </> Typing Component Props
+                type AppProps = {
+                    message: string;
+                    count: number;
+                    disabled: boolean;
+                }
+            </> optional prop
+                optional?: OptionalType;
+            
+            </> types union (|)
+                < string | number | null >
+
+            </> Function Components
+                type AppProps = {
+                    message: string;
+                };
+                const App: React.FC<AppProps> = ({ message }) => <div>{message}</div>;
+
+            </> Hooks: useState
+                const [user, setUser] = useState<User | null>(null);
+                
+            </> 
+
+-----------------------------------------------------------------------------------------------
+
