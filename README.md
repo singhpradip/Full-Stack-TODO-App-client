@@ -1,30 +1,137 @@
-# React + TypeScript + Vite
+#ToLearn
+1.) TypeScript crash course
+        <Resources>
+            </> https://react-typescript-cheatsheet.netlify.app/docs/basic/setup
+            </> https://www.youtube.com/watch?v=joTOrCiAPB4
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+2.) Material UI
 
-Currently, two official plugins are available:
+-----------------------------------------------------------------------------------------------
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+#Learnings 
+1.) TypeScript:
+        <TopicsCovered>
+            </> Typing Component Props
+                type AppProps = {
+                    message: string;
+                    count: number;
+                    disabled: boolean;
+                } or,
+                interface AppProps = {
+                    message: string;
+                    count: number;
+                }
+                //consider using type for your React Component Props and State, for consistency and because it is more constrained
 
-## Expanding the ESLint configuration
+            </> optional prop
+                optional?: OptionalType;
+            
+            </> types union (|)
+                < string | number | null >
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+            </> Function Components
+                type AppProps = {
+                    message: string;
+                };
+                const App: React.FC<AppProps> = ({ message }) => <div>{message}</div>;
 
-- Configure the top-level `parserOptions` property like this:
+            </> Forms and Events:
+                const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+                    setValue(e.target.value);    
+                }
+                const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+                    e.preventDefault();    
+                }
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+            </> Hooks: (useState)
+                const [user, setUser] = useState<User | null>(null);
+                
+            </> Hooks: (useContext)
+                // types file (Define the Context Type)
+                    export interface User {
+                    name: string;
+                    email: string;
+                    }
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+                    export interface UserContextType {
+                    user: User | null;
+                    setUser: React.Dispatch<React.SetStateAction<User | null>>;
+                    }
+                
+                // context file (Create the Context)
+                    import React, { createContext, useState, useContext } from 'react';
+                    import { User, UserContextType } from './types';
+
+                    // Create the context
+                    const UserContext = createContext<UserContextType | undefined>(undefined);
+
+                    // Create a provider component
+                    export const UserProvider: React.FC = ({ children }) => {
+                    const [user, setUser] = useState<User | null>(null);
+
+                    return (
+                        <UserContext.Provider value={{ user, setUser }}>
+                        {children}
+                        </UserContext.Provider>
+                    );
+                    };
+
+                    // Custom hook to use the UserContext
+                    export const useUser = (): UserContextType => {
+                    const context = useContext(UserContext);
+                    if (!context) {
+                        throw new Error('useUser must be used within a UserProvider');
+                    }
+                    return context;
+                    };
+
+                // App.tsx (Provide the Context)
+                    import React from 'react';
+                    import { UserProvider } from './UserContext';
+                    import UserProfile from './UserProfile';
+
+                    const App: React.FC = () => {
+                    return (
+                        <UserProvider>
+                        <div>
+                            <h1>Welcome to the App</h1>
+                            <UserProfile />
+                        </div>
+                        </UserProvider>
+                    );
+                    };
+                    export default App;
+
+                // UserProfile.tsx (Consume context )
+                    import React from 'react';
+                    import { useUser } from './UserContext';
+
+                    const UserProfile: React.FC = () => {
+                    const { user, setUser } = useUser();
+
+                    const handleLogin = () => {
+                        setUser({ name: 'Pradip Singh', email: 'kumarpradip3956@gmail.com' });
+                    };
+
+                    return (
+                        <div>
+                        {user ? (
+                            <div>
+                            <h2>{user.name}</h2>
+                            <p>{user.email}</p>
+                            </div>
+                        ) : (
+                            <button onClick={handleLogin}>Login</button>
+                        )}
+                        </div>
+                    );
+                    };
+                    export default UserProfile;
+                
+    Good to go..
+
+2.) Material UI
+            
+
+-----------------------------------------------------------------------------------------------
+
