@@ -9,11 +9,18 @@ import SignUp from "./pages/SignUpPage.tsx";
 import TodoList from "./pages/TodoListPage.tsx";
 import ErrorPage from "./pages/ErrorPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/login" replace />,
+    element: (
+      <AuthProvider>
+        <ProtectedRoute>
+          <TodoList />
+        </ProtectedRoute>
+      </AuthProvider>
+    ),
     errorElement: <ErrorPage />,
   },
   {
@@ -24,15 +31,6 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/todos",
-    element: (
-      <ProtectedRoute>
-        <TodoList />
-      </ProtectedRoute>
-    ),
     errorElement: <ErrorPage />,
   },
   {
