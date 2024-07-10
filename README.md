@@ -1,137 +1,46 @@
-# ToLearn
-### 1.) TypeScript crash course
-        <Resources>
-            </> https://react-typescript-cheatsheet.netlify.app/docs/basic/setup
-            </> https://www.youtube.com/watch?v=joTOrCiAPB4
+# Getting Started with Create React App
 
-### 2.) Material UI
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
------------------------------------------------------------------------------------------------
+## Available Scripts
 
-# Learnings 
-### 1.) TypeScript:
-        <TopicsCovered>
-            </> Typing Component Props
-                type AppProps = {
-                    message: string;
-                    count: number;
-                    disabled: boolean;
-                } or,
-                interface AppProps = {
-                    message: string;
-                    count: number;
-                }
-                //consider using type for your React Component Props and State, for consistency and because it is more constrained
+In the project directory, you can run:
 
-            </> optional prop
-                optional?: OptionalType;
-            
-            </> types union (|)
-                < string | number | null >
+### `npm start`
 
-            </> Function Components
-                type AppProps = {
-                    message: string;
-                };
-                const App: React.FC<AppProps> = ({ message }) => <div>{message}</div>;
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-            </> Forms and Events:
-                const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-                    setValue(e.target.value);    
-                }
-                const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-                    e.preventDefault();    
-                }
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-            </> Hooks: (useState)
-                const [user, setUser] = useState<User | null>(null);
-                
-            </> Hooks: (useContext)
-                // types file (Define the Context Type)
-                    export interface User {
-                    name: string;
-                    email: string;
-                    }
+### `npm test`
 
-                    export interface UserContextType {
-                    user: User | null;
-                    setUser: React.Dispatch<React.SetStateAction<User | null>>;
-                    }
-                
-                // context file (Create the Context)
-                    import React, { createContext, useState, useContext } from 'react';
-                    import { User, UserContextType } from './types';
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-                    // Create the context
-                    const UserContext = createContext<UserContextType | undefined>(undefined);
+### `npm run build`
 
-                    // Create a provider component
-                    export const UserProvider: React.FC = ({ children }) => {
-                    const [user, setUser] = useState<User | null>(null);
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-                    return (
-                        <UserContext.Provider value={{ user, setUser }}>
-                        {children}
-                        </UserContext.Provider>
-                    );
-                    };
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-                    // Custom hook to use the UserContext
-                    export const useUser = (): UserContextType => {
-                    const context = useContext(UserContext);
-                    if (!context) {
-                        throw new Error('useUser must be used within a UserProvider');
-                    }
-                    return context;
-                    };
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-                // App.tsx (Provide the Context)
-                    import React from 'react';
-                    import { UserProvider } from './UserContext';
-                    import UserProfile from './UserProfile';
+### `npm run eject`
 
-                    const App: React.FC = () => {
-                    return (
-                        <UserProvider>
-                        <div>
-                            <h1>Welcome to the App</h1>
-                            <UserProfile />
-                        </div>
-                        </UserProvider>
-                    );
-                    };
-                    export default App;
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-                // UserProfile.tsx (Consume context )
-                    import React from 'react';
-                    import { useUser } from './UserContext';
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-                    const UserProfile: React.FC = () => {
-                    const { user, setUser } = useUser();
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-                    const handleLogin = () => {
-                        setUser({ name: 'Pradip Singh', email: 'kumarpradip3956@gmail.com' });
-                    };
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-                    return (
-                        <div>
-                        {user ? (
-                            <div>
-                            <h2>{user.name}</h2>
-                            <p>{user.email}</p>
-                            </div>
-                        ) : (
-                            <button onClick={handleLogin}>Login</button>
-                        )}
-                        </div>
-                    );
-                    };
-                    export default UserProfile;
-                
-    Good to go..
+## Learn More
 
-### 2.) Material UI
-            
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
------------------------------------------------------------------------------------------------
-
+To learn React, check out the [React documentation](https://reactjs.org/).
