@@ -37,6 +37,44 @@ export const login = async ({
   }
 };
 
+
+export const signup = async ({
+  firstName,
+  lastName,
+  email,
+  password,
+}: {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+}) => {
+  try {
+    const response = await axiosInstance.post("/auth/register", {
+      firstName,
+      lastName,
+      email,
+      password,
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(error.response?.data?.message || "Failed to signup");
+  }
+};
+
+export const verifyAccount = async (otp: string) => {
+  try {
+    const response = await axiosInstance.post("/auth/register/verify-account", {
+      otp,
+    });
+    return response.data;
+  } catch (error: any) {
+    throw new Error(
+      error.response?.data?.message || "Failed to verify account"
+    );
+  }
+};
+
 export const updateUser = async (updatedData: Partial<UserData>) => {
   try {
     const response = await axiosInstance.put("/user/update", updatedData);
