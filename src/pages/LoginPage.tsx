@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useMutation } from "react-query";
 import {
   TextField,
@@ -8,6 +8,8 @@ import {
   Typography,
   Box,
   CircularProgress,
+  Grid,
+  Paper,
 } from "@mui/material";
 import { login } from "../services/authService";
 import { AuthContext } from "../context/AuthContext";
@@ -18,11 +20,15 @@ const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [formError, setFormError] = useState<{
+    email?: string;
+    password?: string;
+  }>({});
 
   const mutation = useMutation(login, {
     onSuccess: (data) => {
-      setUser(data.data); // Set user information in AuthContext
-      navigate("/"); // Redirect to the main page
+      setUser(data.data);
+      navigate("/");
     },
     onError: (error: any) => {
       console.error("Login failed:", error);
@@ -30,59 +36,113 @@ const Login: React.FC = () => {
     },
   });
 
+  const validateForm = (): boolean => {
+    const errors: { email?: string; password?: string } = {};
+
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    } else if (!validateEmail(email)) {
+      errors.email = "Invalid email format";
+    }
+
+    if (!password.trim()) {
+      errors.password = "Password is required";
+    }
+
+    setFormError(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const validateEmail = (email: string): boolean => {
+    // Simple email validation regex
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    mutation.mutate({ email, password });
+    if (validateForm()) {
+      setError("");
+      mutation.mutate({ email, password });
+    }
   };
 
   return (
-    <Container maxWidth="xs">
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          mt: 8,
-        }}
-      >
-        <Typography variant="h4" component="h1" gutterBottom>
-          Login
-        </Typography>
-        {error && (
-          <Typography color="error" variant="body1">
-            {error}
+    <Container component="main" maxWidth="xs">
+      <Paper elevation={3} sx={{ padding: 3, marginTop: 8 }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h4" component="h1" gutterBottom>
+            Login
           </Typography>
-        )}
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-          <TextField
-            label="Email"
-            type="email"
-            fullWidth
-            margin="normal"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-          <TextField
-            label="Password"
-            type="password"
-            fullWidth
-            margin="normal"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            fullWidth
-            sx={{ mt: 2, mb: 2 }}
-            disabled={mutation.isLoading}
+          {error && (
+            <Typography
+              color="error"
+              variant="body1"
+              align="center"
+              gutterBottom
+              sx={{ mb: 1 }}
+            >
+              {error}
+            </Typography>
+          )}
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            noValidate
+            sx={{ mt: 1 }}
           >
-            {mutation.isLoading ? <CircularProgress size={24} /> : "Login"}
-          </Button>
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <TextField
+                  label="Email"
+                  type="email"
+                  fullWidth
+                  variant="outlined"
+                  margin="normal"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  error={!!formError.email}
+                  helperText={formError.email}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  label="Password"
+                  type="password"
+                  fullWidth
+                  variant="outlined"
+                  margin="normal"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  error={!!formError.password}
+                  helperText={formError.password}
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ mt: 3, mb: 2 }}
+              disabled={mutation.isLoading}
+            >
+              {mutation.isLoading ? <CircularProgress size={24} /> : "Login"}
+            </Button>
+            <Typography variant="body2" align="center">
+              Don't have an account?{" "}
+              <Link to="/signup" style={{ textDecoration: "none" }}>
+                Sign Up here
+              </Link>
+            </Typography>
+          </Box>
         </Box>
-      </Box>
+      </Paper>
     </Container>
   );
 };
