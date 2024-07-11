@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import { useMutation } from "react-query";
+import axiosInstance from "../utils/axiosInstance";
 import {
   AppBar,
   Toolbar,
@@ -32,7 +33,6 @@ import { AuthContext } from "../context/AuthContext";
 const AppLayout: React.FC = () => {
   const { user, setUser } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [cookies, setCookie, removeCookie] = useCookies(["accessToken"]);
   const open = Boolean(anchorEl);
   const navigate = useNavigate();
 
@@ -44,10 +44,18 @@ const AppLayout: React.FC = () => {
     setAnchorEl(null);
   };
 
+  const mutation = useMutation(() => axiosInstance.post("/auth/logout"), {
+    onSuccess: () => {
+      setUser(null);
+      navigate("/login");
+    },
+    onError: (error: any) => {
+      console.error("Logout failed:", error);
+    },
+  });
+
   const handleLogout = () => {
-    setUser(null);
-    removeCookie("accessToken");
-    navigate("/login");
+    mutation.mutate();
   };
 
   const drawerWidth = 240;
