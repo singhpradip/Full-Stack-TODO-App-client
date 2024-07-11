@@ -10,7 +10,6 @@ interface UserData {
   isVerified: boolean;
 }
 
-// Function to verify access token
 export const verifyToken = async (): Promise<UserData> => {
   try {
     const response = await axiosInstance.post("/auth/verify-token");
@@ -20,7 +19,6 @@ export const verifyToken = async (): Promise<UserData> => {
   }
 };
 
-// Function to update user data
 export const updateUser = async (updatedData: Partial<UserData>) => {
   try {
     const response = await axiosInstance.put("/user/update", updatedData);

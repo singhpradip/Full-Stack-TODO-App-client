@@ -1,15 +1,15 @@
 import React from "react";
-import {
-  createBrowserRouter,
-  RouterProvider,
-  Navigate,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/LoginPage.tsx";
 import SignUp from "./pages/SignUpPage.tsx";
-import TodoList from "./pages/TodoListPage.tsx";
 import ErrorPage from "./pages/ErrorPage.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
+import AppLayout from "./pages/AppLayout.tsx";
+import AllTasks from "./components/AllTasks.tsx";
+import PendingTasks from "./components/PendingTasks.tsx";
+import InProgressTasks from "./components/InProgressTasks.tsx";
+import CompletedTasks from "./components/CompletedTasks.tsx";
 
 const router = createBrowserRouter([
   {
@@ -17,20 +17,34 @@ const router = createBrowserRouter([
     element: (
       <AuthProvider>
         <ProtectedRoute>
-          <TodoList />
+          <AppLayout />
         </ProtectedRoute>
+      </AuthProvider>
+    ),
+    errorElement: <ErrorPage />,
+    children: [
+      { path: "/", element: <AllTasks /> },
+      { path: "pending", element: <PendingTasks /> },
+      { path: "in-progress", element: <InProgressTasks /> },
+      { path: "completed", element: <CompletedTasks /> },
+    ],
+  },
+  {
+    path: "/login",
+    element: (
+      <AuthProvider>
+        <Login />
       </AuthProvider>
     ),
     errorElement: <ErrorPage />,
   },
   {
-    path: "/login",
-    element: <Login />,
-    errorElement: <ErrorPage />,
-  },
-  {
     path: "/signup",
-    element: <SignUp />,
+    element: (
+      <AuthProvider>
+        <SignUp />
+      </AuthProvider>
+    ),
     errorElement: <ErrorPage />,
   },
   {
