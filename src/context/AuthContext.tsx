@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, ReactNode } from "react";
 import * as authService from "../services/authService";
-// import { notifyError } from "../utils/notification";
+import { useCookies } from "react-cookie";
 
 interface UserData {
   userId: string;
@@ -11,15 +11,16 @@ interface UserData {
   isDarkMode: boolean;
   isVerified: boolean;
 }
-interface AuthProviderProps {
-  children: ReactNode;
-}
 
 interface AuthContextType {
   user: UserData | null;
   loading: boolean;
   setUser: (user: UserData | null) => void;
   updateUser: (updatedData: Partial<UserData>) => void;
+}
+
+interface AuthProviderProps {
+  children: ReactNode;
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -33,24 +34,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
   console.log(user);
+  const [cookies] = useCookies(["accessToken"]);
 
   useEffect(() => {
     const checkUser = async () => {
+      setLoading(true);
       try {
-        const userData = await authService.verifyToken();
-        setUser(userData);
+        if (cookies.accessToken) {
+          const userData = await authService.verifyToken();
+          setUser(userData);
+        }
       } catch (err) {
         console.error("ERROR: ", err);
         setUser(null);
-        console.log("Invalid token or session expired. Please log in again.");
-        // notifyError("Invalid token or session expired. Please log in again.");
       } finally {
         setLoading(false);
       }
     };
 
     checkUser();
-  }, []);
+  }, [cookies.accessToken]);
 
   const updateUser = async (updatedData: Partial<UserData>) => {
     try {
@@ -61,7 +64,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       }));
     } catch (error: any) {
       console.log("Failed to update user data:", error.message);
-      //   notifyError("Failed to update user data:", error.message);
     }
   };
 
