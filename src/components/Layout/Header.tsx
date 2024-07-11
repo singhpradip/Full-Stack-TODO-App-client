@@ -10,7 +10,7 @@ import {
   Divider,
 } from "@mui/material";
 import {
-  Menu as MenuIcon,
+  // Menu as MenuIcon,
   Edit as EditIcon,
   ExitToApp as LogoutIcon,
 } from "@mui/icons-material";
