@@ -9,20 +9,26 @@ import {
   IconButton,
 } from "@mui/material";
 import { Add as AddIcon, Close as CloseIcon } from "@mui/icons-material";
+import { useTaskContext } from "../../context/TaskContext";
 
 const AddTaskButton: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const { addTask } = useTaskContext();
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleSubmit = () => {
-    console.log("Task Submitted:", { title, description });
-    setOpen(false);
-    setTitle("");
-    setDescription("");
+  const handleSubmit = async () => {
+    try {
+      await addTask({ title, description });
+      handleClose();
+      setTitle("");
+      setDescription("");
+    } catch (error) {
+      console.error("Failed to add task:", error);
+    }
   };
 
   return (

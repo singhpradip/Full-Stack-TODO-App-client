@@ -33,7 +33,7 @@ export const AuthContext = createContext<AuthContextType>({
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<UserData | null>(null);
   const [loading, setLoading] = useState(true);
-  console.log(user);
+  // console.log(user);
   const [cookies] = useCookies(["accessToken"]);
 
   useEffect(() => {

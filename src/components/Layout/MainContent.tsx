@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Toolbar } from "@mui/material";
 
 const MainContent = () => {
+
   const drawerWidth = 200;
 
   return (
