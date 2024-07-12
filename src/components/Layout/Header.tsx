@@ -83,7 +83,7 @@ const Header = () => {
           </Menu>
         </Toolbar>
       </AppBar>
-      <Toolbar /> {/* Optional: To maintain consistent spacing */}
+      <Toolbar />
     </>
   );
 };
