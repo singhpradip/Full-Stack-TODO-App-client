@@ -6,6 +6,7 @@ export default function AllTasks() {
   return (
     <div>
       <h1>AllTasks</h1>
+      <h2>Please open and view console.. :) </h2>
     </div>
   );
 }
