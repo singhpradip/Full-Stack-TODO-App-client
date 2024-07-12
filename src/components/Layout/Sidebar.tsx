@@ -26,7 +26,6 @@ const Sidebar = () => {
     <Drawer
       variant="permanent"
       style={{
-        width: drawerWidth,
         flexShrink: 0,
       }}
       PaperProps={{ style: { width: drawerWidth } }}

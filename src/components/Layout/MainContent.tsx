@@ -2,10 +2,10 @@ import { Outlet } from "react-router-dom";
 import { Toolbar } from "@mui/material";
 
 const MainContent = () => {
-  const drawerWidth = 240;
+  const drawerWidth = 200;
 
   return (
-    <main style={{ flexGrow: 1, padding: "24px", marginLeft: drawerWidth }}>
+    <main style={{ flexGrow: 1, padding: "0 10px", marginLeft: drawerWidth }}>
       <Toolbar />
       <Outlet />
     </main>

@@ -1,8 +1,9 @@
 import React from "react";
 import { CssBaseline } from "@mui/material";
-import Header from "../components/Layout/Header.tsx";
-import Sidebar from "../components/Layout/Sidebar.tsx";
-import MainContent from "../components/Layout/MainContent.tsx";
+import Header from "../components/Layout/Header";
+import Sidebar from "../components/Layout/Sidebar";
+import MainContent from "../components/Layout/MainContent";
+import AddTaskButton from "../components/TaskComponents/AddTaskButton";
 
 const AppLayout: React.FC = () => {
   return (
@@ -11,6 +12,7 @@ const AppLayout: React.FC = () => {
       <Header />
       <Sidebar />
       <MainContent />
+      <AddTaskButton />
     </div>
   );
 };
