@@ -16,6 +16,8 @@ interface Task {
 interface TaskContextProps {
   tasks: Task[];
   addTask: (task: { title: string; description: string }) => Promise<void>;
+  updateTask: (taskId: string, updatedData: Partial<Task>) => Promise<void>;
+  deleteTask: (taskId: string) => Promise<void>;
 }
 
 const TaskContext = createContext<TaskContextProps | undefined>(undefined);
@@ -25,23 +27,44 @@ export const TaskProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const queryClient = useQueryClient();
 
-  // Fetch
   const {
     data: tasks = [],
     isLoading,
     isError,
-  } = useQuery<Task[]>("tasks", () => taskService.getTasks());
-  //add
-  const mutation = useMutation(taskService.addTask, {
+  } = useQuery<Task[]>("tasks", taskService.getTasks);
+
+  const addTaskMutation = useMutation(taskService.addTask, {
     onSuccess: () => {
-      // Invalidate and refetch tasks when mutation
       queryClient.invalidateQueries("tasks");
     },
   });
 
-  // Function to add a task
+  const updateTaskMutation = useMutation(
+    (updatedData: { taskId: string; updatedData: Partial<Task> }) =>
+      taskService.updateTask(updatedData.taskId, updatedData.updatedData),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries("tasks");
+      },
+    }
+  );
+
+  const deleteTaskMutation = useMutation(taskService.deleteTask, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("tasks");
+    },
+  });
+
   const addTask = async (task: { title: string; description: string }) => {
-    await mutation.mutateAsync(task);
+    await addTaskMutation.mutateAsync(task);
+  };
+
+  const updateTask = async (taskId: string, updatedData: Partial<Task>) => {
+    await updateTaskMutation.mutateAsync({ taskId, updatedData });
+  };
+
+  const deleteTask = async (taskId: string) => {
+    await deleteTaskMutation.mutateAsync(taskId);
   };
 
   if (isLoading) {
@@ -57,6 +80,8 @@ export const TaskProvider: React.FC<{ children: ReactNode }> = ({
       value={{
         tasks,
         addTask,
+        updateTask,
+        deleteTask,
       }}
     >
       {children}
@@ -64,7 +89,6 @@ export const TaskProvider: React.FC<{ children: ReactNode }> = ({
   );
 };
 
-// Custom hook to use TaskContext
 export const useTaskContext = () => {
   const context = useContext(TaskContext);
   if (!context) {

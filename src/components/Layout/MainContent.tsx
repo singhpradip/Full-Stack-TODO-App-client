@@ -3,10 +3,15 @@ import { Toolbar } from "@mui/material";
 
 const MainContent = () => {
 
-  const drawerWidth = 200;
-
   return (
-    <main style={{ flexGrow: 1, padding: "0 10px", marginLeft: drawerWidth }}>
+    <main
+      style={{
+        flexGrow: 1,
+        padding: "0 10px",
+        marginLeft: "180px",
+        marginTop: "10px",
+      }}
+    >
       <Toolbar />
       <Outlet />
     </main>
