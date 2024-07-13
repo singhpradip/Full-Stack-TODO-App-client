@@ -1,12 +1,28 @@
 import { useTaskContext } from "../../context/TaskContext";
+import { Box, Container, Typography } from "@mui/material";
+import TaskContainer from "./AllTasksTaskContainer";
 
 export default function AllTasks() {
   const { tasks } = useTaskContext();
-  console.log("allTasks", tasks);
+
+  const getTasksByStatus = (status: string) => {
+    return tasks.filter((task) => task.status === status);
+  };
+
   return (
-    <div>
-      <h1>AllTasks</h1>
-      <h2>Please open and view console.. :) </h2>
-    </div>
+    <Container>
+      <Typography variant="h4" gutterBottom>
+        All Tasks
+      </Typography>
+      <Box display="flex" justifyContent="space-around">
+        {["pending", "in-progress", "completed"].map((status) => (
+          <TaskContainer
+            key={status}
+            status={status}
+            tasks={getTasksByStatus(status)}
+          />
+        ))}
+      </Box>
+    </Container>
   );
 }
