@@ -5,7 +5,7 @@ import { Box, Paper, Grid, Container, Typography } from "@mui/material";
 export default function PendingTasks() {
   const { tasks } = useTaskContext();
   const pendingTasks = tasks.filter((task) => task.status === "pending");
-  console.log("pendingTasks", pendingTasks);
+  // console.log("pendingTasks", pendingTasks);
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
