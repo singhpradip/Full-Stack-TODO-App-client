@@ -9,6 +9,7 @@ import AllTasks from "./components/TaskComponents/AllTasks.tsx";
 import PendingTasks from "./components/TaskComponents/PendingTasks.tsx";
 import InProgressTasks from "./components/TaskComponents/InProgressTasks.tsx";
 import CompletedTasks from "./components/TaskComponents/CompletedTasks.tsx";
+import EditProfile from "./components/EditProfile.tsx";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
       { path: "pending", element: <PendingTasks /> },
       { path: "in-progress", element: <InProgressTasks /> },
       { path: "completed", element: <CompletedTasks /> },
+      { path: "profile", element: <EditProfile /> },
     ],
   },
   {

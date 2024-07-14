@@ -1,24 +1,9 @@
 import React, { createContext, useContext, ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import taskService from "../services/taskService";
+import { TaskContextProps, Task } from "../types";
 
-interface Task {
-  _id: string;
-  title: string;
-  description: string;
-  status: "pending" | "in-progress" | "completed";
-  userId: string;
-  createdAt: string;
-  updatedAt: string;
-  __v: number;
-}
 
-interface TaskContextProps {
-  tasks: Task[];
-  addTask: (task: { title: string; description: string }) => Promise<void>;
-  updateTask: (taskId: string, updatedData: Partial<Task>) => Promise<void>;
-  deleteTask: (taskId: string) => Promise<void>;
-}
 
 const TaskContext = createContext<TaskContextProps | undefined>(undefined);
 

@@ -32,6 +32,11 @@ const Header = () => {
     setAnchorEl(null);
   };
 
+  const handleEditProfile = () => {
+    handleClose();
+    navigate("/profile");
+  };
+
   const handleLogout = async () => {
     try {
       await axiosInstance.post("/auth/logout");
@@ -67,7 +72,7 @@ const Header = () => {
               <Typography variant="body2">{user?.email}</Typography>
             </MenuItem>
             <Divider />
-            <MenuItem>
+            <MenuItem onClick={handleEditProfile}>
               <EditIcon fontSize="small" />
               <Typography variant="body2" style={{ marginLeft: 10 }}>
                 Edit Profile
