@@ -35,7 +35,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkUser();
   }, [cookies.accessToken]);
 
-  const updateUser = async (updatedData: Partial<UserData>) => {
+  const updateUser = async (updatedData: FormData) => {
     try {
       const response = await authService.updateUser(updatedData);
       const updatedUserData = response.data;

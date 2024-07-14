@@ -41,7 +41,7 @@ export interface AuthContextType {
   user: UserData | null;
   loading: boolean;
   setUser: (user: UserData | null) => void;
-  updateUser: (updatedData: Partial<UserData>) => void;
+  updateUser: (updatedData: FormData) => void;
 }
 
 export interface AuthProviderProps {
