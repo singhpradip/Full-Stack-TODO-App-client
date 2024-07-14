@@ -6,6 +6,7 @@ import {
   Button,
   Container,
   Typography,
+  CircularProgress,
   Box,
   Grid,
   Paper,
@@ -227,7 +228,11 @@ const SignUp: React.FC = () => {
                 sx={{ mt: 3, mb: 2 }}
                 disabled={signupMutation.isLoading}
               >
-                {signupMutation.isLoading ? "Signing Up..." : "Sign Up"}
+                {signupMutation.isLoading ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  "Sign Up"
+                )}
               </Button>
               <Grid container justifyContent="center">
                 <Grid item>
@@ -295,8 +300,13 @@ const SignUp: React.FC = () => {
                 sx={{ mt: 3, mb: 2 }}
                 disabled={verifyOtpMutation.isLoading}
               >
-                {verifyOtpMutation.isLoading ? "Verifying..." : "Verify OTP"}
+                {verifyOtpMutation.isLoading ? (
+                  <CircularProgress size={24} />
+                ) : (
+                  "Verify OTP"
+                )}
               </Button>
+
               <Typography variant="body2" align="center">
                 {/* Didn't receive OTP? <Link>Resend OTP</Link> */}
               </Typography>

@@ -1,14 +1,5 @@
 import axiosInstance from "../utils/axiosInstance";
-
-interface UserData {
-  userId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  profilePicture: string | null;
-  isDarkMode: boolean;
-  isVerified: boolean;
-}
+import { UserData } from "../types";
 
 export const verifyToken = async (): Promise<UserData> => {
   try {
@@ -36,7 +27,6 @@ export const login = async ({
     throw new Error(error.response?.data?.message || "Failed to login");
   }
 };
-
 
 export const signup = async ({
   firstName,
@@ -75,9 +65,9 @@ export const verifyAccount = async (otp: string) => {
   }
 };
 
-export const updateUser = async (updatedData: Partial<UserData>) => {
+export const updateUser = async (updatedData: FormData) => {
   try {
-    const response = await axiosInstance.put("/user/update", updatedData);
+    const response = await axiosInstance.put("/auth/update-user", updatedData);
     return response.data;
   } catch (error: any) {
     throw new Error(error.response?.data?.message || "Failed to update user");

@@ -1,27 +1,7 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import * as authService from "../services/authService";
 import { useCookies } from "react-cookie";
-
-interface UserData {
-  userId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  profilePicture: string | null;
-  isDarkMode: boolean;
-  isVerified: boolean;
-}
-
-interface AuthContextType {
-  user: UserData | null;
-  loading: boolean;
-  setUser: (user: UserData | null) => void;
-  updateUser: (updatedData: Partial<UserData>) => void;
-}
-
-interface AuthProviderProps {
-  children: ReactNode;
-}
+import { AuthContextType, UserData, AuthProviderProps } from "../types";
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -55,9 +35,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     checkUser();
   }, [cookies.accessToken]);
 
-  const updateUser = async (updatedData: Partial<UserData>) => {
+  const updateUser = async (updatedData: FormData) => {
     try {
-      const updatedUserData = await authService.updateUser(updatedData);
+      const response = await authService.updateUser(updatedData);
+      const updatedUserData = response.data;
       setUser((prevUser) => ({
         ...prevUser!,
         ...updatedUserData,
