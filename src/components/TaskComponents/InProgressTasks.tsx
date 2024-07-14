@@ -5,7 +5,7 @@ import { Box, Paper, Grid, Container, Typography } from "@mui/material";
 export default function InProgressTasks() {
   const { tasks } = useTaskContext();
   const inProgressTasks = tasks.filter((task) => task.status === "in-progress");
-  console.log("inProgressTasks", inProgressTasks);
+  // console.log("inProgressTasks", inProgressTasks);
   return (
     <Container>
       <Typography variant="h4" gutterBottom>

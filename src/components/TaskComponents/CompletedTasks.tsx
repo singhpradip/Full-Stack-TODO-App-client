@@ -6,7 +6,7 @@ export default function CompletedTasks() {
   const { tasks } = useTaskContext();
   const completedTasks = tasks.filter((task) => task.status === "completed");
 
-  console.log("completedTasks", completedTasks);
+  // console.log("completedTasks", completedTasks);
   return (
     <Container>
       <Typography variant="h4" gutterBottom>
