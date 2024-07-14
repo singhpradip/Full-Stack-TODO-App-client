@@ -11,15 +11,15 @@ import {
 import { Edit as EditIcon } from "@mui/icons-material";
 import { AuthContext } from "../context/AuthContext";
 
-interface EditProfileProps {
-  setIsEditingProfile: React.Dispatch<React.SetStateAction<boolean>>;
-}
+// interface EditProfileProps {
+//   setIsEditingProfile: React.Dispatch<React.SetStateAction<boolean>>;
+// }
 
-const EditProfile: React.FC<EditProfileProps> = ({ setIsEditingProfile }) => {
+const EditProfile: React.FC = () => {
   const { user, updateUser } = useContext(AuthContext);
   const [firstName, setFirstName] = useState<string>(user?.firstName || "");
   const [lastName, setLastName] = useState<string>(user?.lastName || "");
-  const [email, setEmail] = useState<string>(user?.email || "");
+  const email = user?.email || "";
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const [formErrors, setFormErrors] = useState<{
     firstName?: string;
@@ -79,7 +79,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ setIsEditingProfile }) => {
       }
 
       updateUser(formData);
-      setIsEditingProfile(false);
+      // setIsEditingProfile(false);
     } catch (error) {
       console.error("Failed to update profile:", error);
     }
@@ -172,7 +172,7 @@ const EditProfile: React.FC<EditProfileProps> = ({ setIsEditingProfile }) => {
           variant="body2"
           color="primary"
           sx={{ cursor: "pointer" }}
-          onClick={() => setIsEditingProfile(false)}
+          // onClick={() => setIsEditingProfile(false)}
         >
           Change password?
         </Typography>

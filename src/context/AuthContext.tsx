@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+import React, { createContext, useState, useEffect } from "react";
 import * as authService from "../services/authService";
 import { useCookies } from "react-cookie";
 import { AuthContextType, UserData, AuthProviderProps } from "../types";
