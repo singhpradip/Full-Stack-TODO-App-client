@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect } from "react";
 import * as authService from "../services/authService";
 import { useCookies } from "react-cookie";
 import { AuthContextType, UserData, AuthProviderProps } from "../types";
+import { notifySuccess, notifyError } from "../utils/notification";
 
 export const AuthContext = createContext<AuthContextType>({
   user: null,
@@ -38,12 +39,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const updateUser = async (updatedData: FormData) => {
     try {
       const response = await authService.updateUser(updatedData);
+      notifySuccess("Profile updated successfully");
       const updatedUserData = response.data;
       setUser((prevUser) => ({
         ...prevUser!,
         ...updatedUserData,
       }));
     } catch (error: any) {
+      notifyError(error.message);
       console.log("Failed to update user data:", error.message);
     }
   };

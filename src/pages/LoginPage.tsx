@@ -13,13 +13,13 @@ import {
 } from "@mui/material";
 import { login } from "../services/authService";
 import { AuthContext } from "../context/AuthContext";
+import { notifySuccess, notifyError } from "../utils/notification";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
   const [formError, setFormError] = useState<{
     email?: string;
     password?: string;
@@ -28,11 +28,12 @@ const Login: React.FC = () => {
   const mutation = useMutation(login, {
     onSuccess: (data) => {
       setUser(data.data);
+      notifySuccess("You are successfully logged in");
       navigate("/");
     },
     onError: (error: any) => {
       console.error("Login failed:", error);
-      setError(error.message || "Login failed. Please try again.");
+      notifyError(error.message);
     },
   });
 
@@ -61,7 +62,6 @@ const Login: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      setError("");
       mutation.mutate({ email, password });
     }
   };
@@ -79,17 +79,7 @@ const Login: React.FC = () => {
           <Typography variant="h4" component="h1" gutterBottom>
             Login
           </Typography>
-          {error && (
-            <Typography
-              color="error"
-              variant="body1"
-              align="center"
-              gutterBottom
-              sx={{ mb: 1 }}
-            >
-              {error}
-            </Typography>
-          )}
+
           <Box
             component="form"
             onSubmit={handleSubmit}
