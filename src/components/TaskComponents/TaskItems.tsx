@@ -4,16 +4,16 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  TextField,
   Button,
+  InputBase,
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CheckIcon from "@mui/icons-material/Check";
+import CancelIcon from "@mui/icons-material/Cancel";
 
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useTaskContext } from "../../context/TaskContext";
 import { Task, TaskItemProps } from "../../types";
-
-// --------------------------------------------
 
 const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
   const { updateTask, deleteTask } = useTaskContext();
@@ -24,22 +24,23 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
   const [editedDescription, setEditedDescription] = useState(task.description);
 
   const open = Boolean(anchorEl);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const handleUpdateStatus = (taskId: string, status: Task["status"]) => {
     updateTask(taskId, { status });
   };
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handleOptionsClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleOptionsClose = () => {
     setAnchorEl(null);
   };
 
   const handleEditClick = () => {
     setEditMode(true);
-    setAnchorEl(null); // Close menu on edit mode
+    setAnchorEl(null);
   };
 
   const handleCancelEdit = () => {
@@ -49,7 +50,6 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
   };
 
   const handleSubmitEdit = () => {
-    // Perform update only if there are changes
     if (editedTitle !== task.title || editedDescription !== task.description) {
       updateTask(task._id, {
         title: editedTitle,
@@ -59,8 +59,30 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
     setEditMode(false);
   };
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      containerRef.current &&
+      !containerRef.current.contains(event.target as Node)
+    ) {
+      handleSubmitEdit();
+    }
+  };
+
+  useEffect(() => {
+    if (editMode) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [editMode]);
+
   return (
     <Box
+      ref={containerRef}
       sx={{
         userSelect: "none",
         padding: 1,
@@ -73,6 +95,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
         alignItems: "center",
       }}
     >
+      {/* show task info or edit boxes */}
       <Box sx={{ flex: 1 }}>
         {!editMode ? (
           <>
@@ -85,46 +108,69 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
           </>
         ) : (
           <>
-            <TextField
-              fullWidth
+            <InputBase
               value={editedTitle}
               onChange={(e) => setEditedTitle(e.target.value)}
+              fullWidth
+              sx={{
+                fontWeight: "bold",
+                typography: "subtitle1",
+                marginBottom: 1,
+                borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+                paddingBottom: "4px",
+              }}
             />
-            <TextField
+            <InputBase
+              value={editedDescription}
+              onChange={(e) => setEditedDescription(e.target.value)}
               fullWidth
               multiline
               rows={3}
-              value={editedDescription}
-              onChange={(e) => setEditedDescription(e.target.value)}
+              sx={{
+                typography: "body2",
+                fontSize: "small",
+                borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+                paddingBottom: "4px",
+              }}
             />
-            <Box mt={1}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSubmitEdit}
-              >
-                Update
-              </Button>
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={handleCancelEdit}
-              >
-                Cancel
-              </Button>
-            </Box>
           </>
         )}
       </Box>
-      <IconButton onClick={handleClick}>
-        <MoreVertIcon />
-      </IconButton>
-      <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+
+      {/* show icons like options, save and calcel */}
+      {!editMode ? (
+        <IconButton onClick={handleOptionsClick}>
+          <MoreVertIcon />
+        </IconButton>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-end",
+          }}
+        >
+          <Button
+            startIcon={<CancelIcon />}
+            color="secondary"
+            onClick={handleCancelEdit}
+            sx={{ marginBottom: 1 }}
+          />
+          <Button
+            startIcon={<CheckIcon />}
+            color="primary"
+            onClick={handleSubmitEdit}
+          />
+        </Box>
+      )}
+
+      {/* shwo task options model */}
+      <Menu anchorEl={anchorEl} open={open} onClose={handleOptionsClose}>
         {task.status !== "completed" && (
           <MenuItem
             onClick={() => {
               handleUpdateStatus(task._id, "completed");
-              handleClose();
+              handleOptionsClose();
             }}
           >
             Mark as Completed
@@ -134,7 +180,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
           <MenuItem
             onClick={() => {
               handleUpdateStatus(task._id, "pending");
-              handleClose();
+              handleOptionsClose();
             }}
           >
             Move to Todo
@@ -144,7 +190,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
           <MenuItem
             onClick={() => {
               handleUpdateStatus(task._id, "in-progress");
-              handleClose();
+              handleOptionsClose();
             }}
           >
             Move to In-Progress
@@ -158,7 +204,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
         <MenuItem
           onClick={() => {
             deleteTask(task._id);
-            handleClose();
+            handleOptionsClose();
           }}
         >
           Delete
