@@ -14,6 +14,7 @@ import {
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { signup, verifyAccount } from "../services/authService";
+import { notifySuccess, notifyError } from "../utils/notification";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
@@ -23,7 +24,6 @@ const SignUp: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [otp, setOtp] = useState("");
-  const [error, setError] = useState("");
   const [showVerification, setShowVerification] = useState(false);
   const [formErrors, setFormErrors] = useState<{
     firstName?: string;
@@ -44,11 +44,11 @@ const SignUp: React.FC = () => {
     {
       onSuccess: () => {
         setShowVerification(true);
-        setError("");
+        notifySuccess("Please use OTP sent to your email");
       },
       onError: (error: any) => {
         console.error("Sign-up failed:", error);
-        setError(error.message);
+        notifyError(error.message);
       },
     }
   );
@@ -56,10 +56,11 @@ const SignUp: React.FC = () => {
   const verifyOtpMutation = useMutation((otp: string) => verifyAccount(otp), {
     onSuccess: () => {
       navigate("/");
+      notifySuccess("Account verified successfully");
     },
     onError: (error: any) => {
       console.error("OTP verification failed:", error);
-      setError(error.message);
+      notifyError(error.message);
     },
   });
 
@@ -107,7 +108,6 @@ const SignUp: React.FC = () => {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      setError("");
       signupMutation.mutate({ firstName, lastName, email, password });
     }
   };
@@ -133,9 +133,8 @@ const SignUp: React.FC = () => {
 
   const handleGoBack = () => {
     setShowVerification(false);
-    setOtp(""); // Clear OTP field when going back
-    setError(""); // Clear any existing error messages
-    setFormErrors({}); // Clear form errors
+    setOtp("");
+    setFormErrors({});
   };
 
   return (
@@ -146,16 +145,7 @@ const SignUp: React.FC = () => {
             <Typography component="h1" variant="h5" align="center" gutterBottom>
               Sign Up
             </Typography>
-            {error && (
-              <Typography
-                color="error"
-                variant="body1"
-                align="center"
-                gutterBottom
-              >
-                {error}
-              </Typography>
-            )}
+
             <Box
               component="form"
               onSubmit={handleSignUp}
@@ -264,16 +254,7 @@ const SignUp: React.FC = () => {
                 Verify OTP
               </Typography>
             </Box>
-            {error && (
-              <Typography
-                color="error"
-                variant="body1"
-                align="center"
-                gutterBottom
-              >
-                {error}
-              </Typography>
-            )}
+
             <Box
               component="form"
               onSubmit={handleVerifyOtp}

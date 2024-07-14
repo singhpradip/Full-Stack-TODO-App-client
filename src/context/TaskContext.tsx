@@ -2,8 +2,7 @@ import React, { createContext, useContext, ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import taskService from "../services/taskService";
 import { TaskContextProps, Task } from "../types";
-
-
+import { notifySuccess, notifyError } from "../utils/notification";
 
 const TaskContext = createContext<TaskContextProps | undefined>(undefined);
 
@@ -20,7 +19,11 @@ export const TaskProvider: React.FC<{ children: ReactNode }> = ({
 
   const addTaskMutation = useMutation(taskService.addTask, {
     onSuccess: () => {
+      notifySuccess("Task added successfully");
       queryClient.invalidateQueries("tasks");
+    },
+    onError: () => {
+      notifyError("Error adding task");
     },
   });
 
@@ -29,14 +32,22 @@ export const TaskProvider: React.FC<{ children: ReactNode }> = ({
       taskService.updateTask(updatedData.taskId, updatedData.updatedData),
     {
       onSuccess: () => {
+        notifySuccess("Task updated successfully");
         queryClient.invalidateQueries("tasks");
+      },
+      onError: () => {
+        notifyError("Error updating task");
       },
     }
   );
 
   const deleteTaskMutation = useMutation(taskService.deleteTask, {
     onSuccess: () => {
+      notifySuccess("Task deleted successfully");
       queryClient.invalidateQueries("tasks");
+    },
+    onError: () => {
+      notifyError("Error deleting task");
     },
   });
 

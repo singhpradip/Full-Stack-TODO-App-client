@@ -95,6 +95,7 @@ const EditProfile: React.FC = () => {
             width: 150,
             height: 150,
             borderRadius: "50%",
+            border: "4px solid #ccc",
             overflow: "hidden",
           }}
         >
@@ -105,7 +106,11 @@ const EditProfile: React.FC = () => {
                 ? URL.createObjectURL(profilePicture)
                 : user?.profilePicture || ""
             }
-            sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+            sx={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
           />
           <input
             type="file"
@@ -118,8 +123,8 @@ const EditProfile: React.FC = () => {
             onClick={() => fileInputRef.current?.click()}
             style={{
               position: "absolute",
-              bottom: 4,
-              right: 4,
+              bottom: 5,
+              right: 5,
               backgroundColor: "white",
             }}
           >

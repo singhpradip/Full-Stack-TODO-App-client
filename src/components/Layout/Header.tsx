@@ -5,6 +5,7 @@ import {
   IconButton,
   Typography,
   Avatar,
+  Box,
   Menu,
   MenuItem,
   Divider,
@@ -51,41 +52,55 @@ const Header = () => {
     <>
       <AppBar position="fixed" style={{ zIndex: 1400 }}>
         <Toolbar>
-          <Typography variant="h6" noWrap style={{ flexGrow: 1 }}>
-            Todo Application
-          </Typography>
-          <IconButton edge="end" color="inherit" onClick={handleMenu}>
-            <Avatar alt={user?.firstName} src={user?.profilePicture || ""} />
-          </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            keepMounted
-          >
-            <MenuItem>
-              <Typography variant="subtitle1">
-                {user?.firstName} {user?.lastName}
-              </Typography>
-            </MenuItem>
-            <MenuItem>
-              <Typography variant="body2">{user?.email}</Typography>
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleEditProfile}>
-              <EditIcon fontSize="small" />
-              <Typography variant="body2" style={{ marginLeft: 10 }}>
-                Edit Profile
-              </Typography>
-            </MenuItem>
-            <Divider />
-            <MenuItem onClick={handleLogout}>
-              <LogoutIcon fontSize="small" />
-              <Typography variant="body2" style={{ marginLeft: 10 }}>
-                Logout
-              </Typography>
-            </MenuItem>
-          </Menu>
+          <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+            <Avatar
+              alt="0"
+              src="list.png"
+              sx={{ width: 30, height: 30, marginRight: 1 }}
+            />
+            <Typography variant="h6" noWrap>
+              Todo Application
+            </Typography>
+          </Box>
+          {/* User avatar and menu */}
+          <Box>
+            <IconButton edge="end" color="inherit" onClick={handleMenu}>
+              <Avatar
+                alt={user?.firstName}
+                src={user?.profilePicture || ""}
+                sx={{ border: "2px solid #ccc", width: 45, height: 45 }}
+              />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              keepMounted
+            >
+              <MenuItem>
+                <Typography variant="subtitle1">
+                  {user?.firstName} {user?.lastName}
+                </Typography>
+              </MenuItem>
+              <MenuItem>
+                <Typography variant="body2">{user?.email}</Typography>
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={handleEditProfile}>
+                <EditIcon fontSize="small" />
+                <Typography variant="body2" style={{ marginLeft: 10 }}>
+                  Edit Profile
+                </Typography>
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={handleLogout}>
+                <LogoutIcon fontSize="small" />
+                <Typography variant="body2" style={{ marginLeft: 10 }}>
+                  Logout
+                </Typography>
+              </MenuItem>
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
       <Toolbar />
