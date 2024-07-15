@@ -2,6 +2,7 @@ import React, { ReactNode, useEffect, useState, useContext } from "react";
 import { Navigate } from "react-router-dom";
 import { verifyToken } from "../services/authService";
 import { AuthContext } from "../context/AuthContext";
+import { Box, LinearProgress } from "@mui/material";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -29,7 +30,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   }, [setUser]);
 
   if (loading) {
-    return <div>Loading..</div>;
+    return (
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress />
+      </Box>
+    );
   }
 
   if (!user) {

@@ -2,6 +2,7 @@ import React, { createContext, useContext, ReactNode } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import taskService from "../services/taskService";
 import { TaskContextProps, Task } from "../types";
+import { Box, LinearProgress } from "@mui/material";
 import { notifySuccess, notifyError } from "../utils/notification";
 
 const TaskContext = createContext<TaskContextProps | undefined>(undefined);
@@ -64,7 +65,11 @@ export const TaskProvider: React.FC<{ children: ReactNode }> = ({
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <Box sx={{ width: "100%" }}>
+        <LinearProgress />
+      </Box>
+    );
   }
 
   if (isError || !tasks) {
