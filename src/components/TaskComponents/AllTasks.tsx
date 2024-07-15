@@ -1,5 +1,5 @@
 import { useTaskContext } from "../../context/TaskContext";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Container, Typography, Grid } from "@mui/material";
 import TaskContainer from "./AllTasksTaskContainer";
 
 export default function AllTasks() {
@@ -14,15 +14,13 @@ export default function AllTasks() {
       <Typography variant="h4" gutterBottom>
         All Tasks
       </Typography>
-      <Box display="flex" justifyContent="space-around">
+      <Grid container spacing={3}>
         {["pending", "in-progress", "completed"].map((status) => (
-          <TaskContainer
-            key={status}
-            status={status}
-            tasks={getTasksByStatus(status)}
-          />
+          <Grid item xs={12} md={4} key={status}>
+            <TaskContainer status={status} tasks={getTasksByStatus(status)} />
+          </Grid>
         ))}
-      </Box>
+      </Grid>
     </Container>
   );
 }
