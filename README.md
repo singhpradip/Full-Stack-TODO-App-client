@@ -1,5 +1,5 @@
-## View Live DEMO: 
-[Click here to view LIVE](https://mytodo-pradip.vercel.app)
+## View Live DEMO:  [Click here to view LIVE](https://mytodo-pradip.vercel.app)
+
 -----------------------------------------------------------------------------------------------
 
 # ToLearn
