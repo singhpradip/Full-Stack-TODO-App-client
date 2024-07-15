@@ -5,6 +5,8 @@ import {
   ListItemIcon,
   ListItemText,
   Toolbar,
+  useMediaQuery,
+  Theme,
 } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -15,7 +17,10 @@ import {
 } from "@mui/icons-material";
 
 const Sidebar = () => {
-  const drawerWidth = 240;
+  const isSmallScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("sm")
+  );
+  const drawerWidth = isSmallScreen ? 60 : 240;
   const location = useLocation();
 
   const isActive = (path: string) => {
@@ -23,20 +28,15 @@ const Sidebar = () => {
   };
 
   return (
-    <Drawer
-      variant="permanent"
-      style={{
-        flexShrink: 0,
-      }}
-      PaperProps={{ style: { width: drawerWidth } }}
-    >
+    <Drawer variant="permanent" PaperProps={{ style: { width: drawerWidth } }}>
       <Toolbar />
       <List>
         <ListItem button component={Link} to="/" selected={isActive("/")}>
           <ListItemIcon>
             <AllInbox color={isActive("/") ? "primary" : "inherit"} />
           </ListItemIcon>
-          <ListItemText primary="All Tasks" />
+          
+          {!isSmallScreen && <ListItemText primary="All Tasks" />}
         </ListItem>
         <ListItem
           button
@@ -49,8 +49,9 @@ const Sidebar = () => {
               color={isActive("/pending") ? "primary" : "inherit"}
             />
           </ListItemIcon>
-          <ListItemText primary="Pending Tasks" />
+          {!isSmallScreen && <ListItemText primary="Pending Tasks" />}
         </ListItem>
+
         <ListItem
           button
           component={Link}
@@ -62,7 +63,7 @@ const Sidebar = () => {
               color={isActive("/in-progress") ? "primary" : "inherit"}
             />
           </ListItemIcon>
-          <ListItemText primary="In Progress Tasks" />
+          {!isSmallScreen && <ListItemText primary="In Progress Tasks" />}
         </ListItem>
         <ListItem
           button
@@ -75,7 +76,7 @@ const Sidebar = () => {
               color={isActive("/completed") ? "primary" : "inherit"}
             />
           </ListItemIcon>
-          <ListItemText primary="Completed Tasks" />
+          {!isSmallScreen && <ListItemText primary="Completed Tasks" />}
         </ListItem>
       </List>
     </Drawer>

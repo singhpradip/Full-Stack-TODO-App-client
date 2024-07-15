@@ -1,15 +1,18 @@
 import { Outlet } from "react-router-dom";
-import { Toolbar } from "@mui/material";
-
+import { Toolbar, useMediaQuery, Theme } from "@mui/material";
 const MainContent = () => {
+  const isSmallScreen = useMediaQuery((theme: Theme) =>
+    theme.breakpoints.down("sm")
+  );
+  const drawerWidth = isSmallScreen ? 40 : 200;
 
   return (
     <main
       style={{
         flexGrow: 1,
-        padding: "0 10px",
-        marginLeft: "180px",
         marginTop: "10px",
+        marginLeft: `${drawerWidth}px`,
+        paddingRight: "10px",
       }}
     >
       <Toolbar />

@@ -23,8 +23,7 @@ const TaskContainer: React.FC<TaskContainerProps> = ({ status, tasks }) => {
       elevation={3}
       sx={{
         borderRadius: 2,
-        width: "30%",
-        minHeight: "400px",
+        minHeight: "450px",
         padding: 1,
         backgroundColor: "#f0f0f0",
       }}
