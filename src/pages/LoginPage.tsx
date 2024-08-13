@@ -55,7 +55,6 @@ const Login: React.FC = () => {
   };
 
   const validateEmail = (email: string): boolean => {
-    // Simple email validation regex
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   };
 
